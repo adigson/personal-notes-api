@@ -1,31 +1,169 @@
-# Personal Knowledge Base / Notes API 🧠
-**BeTechified Advanced Backend Engineering - Group 1 Project**
+# Personal Knowledge Base / Notes API
 
-A production-ready RESTful API built with Node.js, Express, and MongoDB Atlas. Serves as the backend for a "Second Brain" note-taking application supporting full CRUD operations, payload validation, and advanced filtering (pagination, sorting, text search).
+A REST API for a second-brain or personal note-taking application. It uses Node.js, Express, MongoDB Atlas and Mongoose and supports validated CRUD operations, pagination, sorting, text search and category filtering.
 
-## 🌐 Live API Deployment
-- **Base URL:** `https://personal-notes-api.onrender.com/api/notes`
-- **GitHub Repository:** `https://github.com/adigson/personal-notes-api`
+## Technology
 
----
+- Node.js and Express
+- MongoDB Atlas and Mongoose
+- dotenv
+- Joi request validation
+- Render deployment
 
-## 🚀 Tech Stack
-- **Runtime:** Node.js + Express.js
-- **Database:** MongoDB Atlas + Mongoose ODM
-- **Validation:** Joi Middleware
-- **Deployment:** Render Web Service
+## Local setup
 
----
+1. Clone the repository.
+2. Install dependencies:
 
-## 🛠️ API Endpoint Documentation & Examples
+   ```bash
+   npm install
+   ```
 
-### 1. Create a Note
-- **POST** `/api/notes`
-- **Body (JSON):**
-  ```json
-  {
-    "title": "Backend Architecture Notes",
-    "content": "Mastering pagination, sorting, and index-backed text search.",
-    "category": "Work",
-    "tags": ["nodejs", "mongodb"]
-  }
+3. Create a `.env` file:
+
+   ```env
+   PORT=5000
+   MONGO_URI=your_mongodb_connection_string
+   ```
+
+4. Start the API:
+
+   ```bash
+   npm start
+   ```
+
+5. Open `http://localhost:5000/`.
+
+## Live deployment
+
+Add the final public Render URL here after deployment, for example:
+
+```text
+https://personal-notes-api.onrender.com
+```
+
+## API endpoints
+
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/api/notes` | Create a note |
+| GET | `/api/notes` | List notes |
+| GET | `/api/notes/:id` | Get a note |
+| PUT | `/api/notes/:id` | Update a note |
+| DELETE | `/api/notes/:id` | Delete a note |
+
+### Create a note
+
+```bash
+POST http://localhost:5000/api/notes
+```
+
+```json
+{
+  "title": "Backend Architecture Notes",
+  "content": "Mastering pagination, sorting, and index-backed text search.",
+  "category": "Work",
+  "tags": ["nodejs", "mongodb"]
+}
+```
+
+### Update a note
+
+A partial update is accepted:
+
+```json
+{
+  "title": "Updated Backend Architecture Notes"
+}
+```
+
+## Query examples
+
+### Pagination
+
+```text
+GET /api/notes?page=1&limit=10
+GET /api/notes?page=2&limit=10
+```
+
+### Sorting
+
+```text
+GET /api/notes?sort=-createdAt
+GET /api/notes?sort=createdAt
+GET /api/notes?sort=title
+```
+
+A minus prefix selects descending order.
+
+### Text search
+
+```text
+GET /api/notes?q=meeting
+GET /api/notes?search=meeting
+```
+
+The text index searches both `title` and `content`.
+
+### Category filtering
+
+```text
+GET /api/notes?category=Work
+```
+
+Category matching is case-insensitive.
+
+Pagination, sorting, search and category filtering can also be combined:
+
+```text
+GET /api/notes?page=1&limit=5&sort=-createdAt&q=meeting&category=Work
+```
+
+## Responses
+
+Successful list requests include:
+
+```json
+{
+  "success": true,
+  "count": 2,
+  "pagination": {
+    "totalItems": 5,
+    "currentPage": 1,
+    "totalPages": 3,
+    "limit": 2
+  },
+  "data": []
+}
+```
+
+Typical HTTP statuses are `200`, `201`, `400`, `404` and `500`. Errors are returned as JSON:
+
+```json
+{
+  "success": false,
+  "message": "Note not found"
+}
+```
+
+## Local test evidence
+
+Screenshots showing successful results for these operations should be retained for the project presentation:
+
+1. Create notes.
+2. Retrieve all notes.
+3. Paginate with `page=1&limit=2`.
+4. Sort with `sort=-createdAt`.
+5. Search with `q=meeting`.
+6. Filter by `category=Work`.
+7. Retrieve, update and delete a note by ID.
+
+## Render deployment
+
+1. Push the repository to GitHub.
+2. Create a Render Web Service connected to the repository.
+3. Build command: `npm install`.
+4. Start command: `npm start`.
+5. Add the environment variable `MONGO_URI` with the Atlas connection string.
+6. Add `NODE_VERSION` if the selected Render runtime needs an explicit version.
+7. Deploy and verify the Render health/root URL and all API endpoints.
