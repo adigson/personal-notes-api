@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "echo \"No automated tests configured\""
+    "test": "node evidence/capture-local-evidence.js",
+    "test:evidence": "node evidence/capture-local-evidence.js"
   },
   "keywords": [],
   "author": "",

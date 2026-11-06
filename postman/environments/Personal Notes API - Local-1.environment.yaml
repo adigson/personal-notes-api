@@ -1,0 +1,4 @@
+name: Personal Notes API - Local
+values:
+  - key: baseUrl
+    value: 'http://localhost:5000'

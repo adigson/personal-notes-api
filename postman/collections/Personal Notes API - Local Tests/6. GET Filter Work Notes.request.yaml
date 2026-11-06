@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/api/notes?category=Work"
+method: GET
+queryParams:
+  category: Work
+scripts:
+  - type: afterResponse
+    code: pm.test('Category filter succeeds', () => pm.response.to.have.status(200));
+    language: text/javascript
+order: 6000

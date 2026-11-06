@@ -148,15 +148,24 @@ Typical HTTP statuses are `200`, `201`, `400`, `404` and `500`. Errors are retur
 
 ## Local test evidence
 
-Screenshots showing successful results for these operations should be retained for the project presentation:
+Run the complete local API suite and generate the evidence screenshots with:
 
-1. Create notes.
-2. Retrieve all notes.
-3. Paginate with `page=1&limit=2`.
-4. Sort with `sort=-createdAt`.
-5. Search with `q=meeting`.
-6. Filter by `category=Work`.
-7. Retrieve, update and delete a note by ID.
+```powershell
+npm start
+npm run test:evidence
+```
+
+The server must remain running while the screenshot command executes. The generated evidence is in [`evidence/screenshots/`](./evidence/screenshots/) and covers:
+
+1. [Create note](./evidence/screenshots/01-post-create.png)
+2. [Retrieve all notes](./evidence/screenshots/02-get-all.png)
+3. [Pagination](./evidence/screenshots/03-pagination.png)
+4. [Newest-first sorting](./evidence/screenshots/04-sort-newest-first.png)
+5. [Text search](./evidence/screenshots/05-search-meeting.png)
+6. [Work category filter](./evidence/screenshots/06-category-work.png)
+7. [Retrieve one note](./evidence/screenshots/07-get-one.png)
+8. [Update note](./evidence/screenshots/08-put-update.png)
+9. [Delete note](./evidence/screenshots/09-delete.png)
 
 ## Render deployment
 

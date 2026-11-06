@@ -1,0 +1,16 @@
+$kind: http-request
+url: "{{baseUrl}}/api/notes/{{createdNoteId}}"
+method: PUT
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "title": "Updated project meeting"
+    }
+scripts:
+  - type: afterResponse
+    code: pm.test('Note updated', () => pm.response.to.have.status(200));
+    language: text/javascript
+order: 8000

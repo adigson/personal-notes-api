@@ -1,0 +1,10 @@
+$kind: http-request
+url: "{{baseUrl}}/api/notes?sort=-createdAt"
+method: GET
+queryParams:
+  sort: -createdAt
+scripts:
+  - type: afterResponse
+    code: pm.test('Sorting succeeds', () => pm.response.to.have.status(200));
+    language: text/javascript
+order: 4000

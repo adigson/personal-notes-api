@@ -1,0 +1,22 @@
+$kind: http-request
+url: "{{baseUrl}}/api/notes"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "title": "Project meeting",
+      "content": "Discuss the backend API meeting agenda, responsibilities and deadlines.",
+      "category": "Work",
+      "tags": ["meeting", "project"]
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Note created', () => pm.response.to.have.status(201));
+      const body = pm.response.json();
+      pm.collectionVariables.set('createdNoteId', body.data._id);
+    language: text/javascript
+order: 1000

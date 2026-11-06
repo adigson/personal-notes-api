@@ -1,0 +1,91 @@
+{
+  "info": {
+    "name": "Personal Notes API - Local Tests",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "createdNoteId", "value": "" },
+    { "key": "deleteNoteId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. POST Create Main Evidence Note",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"title\": \"Project meeting\",\n  \"content\": \"Discuss the backend API meeting agenda, responsibilities and deadlines.\",\n  \"category\": \"Work\",\n  \"tags\": [\"meeting\", \"project\"]\n}" },
+        "url": "{{baseUrl}}/api/notes"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Note created', () => pm.response.to.have.status(201));",
+        "const body = pm.response.json();",
+        "pm.collectionVariables.set('createdNoteId', body.data._id);"
+      ] } }]
+    },
+    {
+      "name": "2. GET All Notes",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/notes" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Notes returned', () => pm.response.to.have.status(200));"] } }]
+    },
+    {
+      "name": "3. GET Pagination",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/notes?page=1&limit=2" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Pagination succeeds', () => pm.response.to.have.status(200));",
+        "pm.test('Maximum of two notes returned', () => pm.expect(pm.response.json().data.length).to.be.at.most(2));"
+      ] } }]
+    },
+    {
+      "name": "4. GET Sort Newest First",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/notes?sort=-createdAt" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Sorting succeeds', () => pm.response.to.have.status(200));"] } }]
+    },
+    {
+      "name": "5. GET Search Meeting",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/notes?q=meeting" },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Search succeeds', () => pm.response.to.have.status(200));",
+        "pm.test('Matching meeting notes returned', () => pm.expect(pm.response.json().count).to.be.above(0));"
+      ] } }]
+    },
+    {
+      "name": "6. GET Filter Work Notes",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/notes?category=Work" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Category filter succeeds', () => pm.response.to.have.status(200));"] } }]
+    },
+    {
+      "name": "7. GET One Note",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/notes/{{createdNoteId}}" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('One note returned', () => pm.response.to.have.status(200));"] } }]
+    },
+    {
+      "name": "8. PUT Update Note",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated project meeting\"\n}" },
+        "url": "{{baseUrl}}/api/notes/{{createdNoteId}}"
+      },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Note updated', () => pm.response.to.have.status(200));"] } }]
+    },
+    {
+      "name": "9A. POST Create Delete Evidence Note",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"title\": \"Temporary deletion test\",\n  \"content\": \"This note is created only to demonstrate the delete endpoint.\",\n  \"category\": \"General\"\n}" },
+        "url": "{{baseUrl}}/api/notes"
+      },
+      "event": [{ "listen": "test", "script": { "exec": [
+        "pm.test('Delete test note created', () => pm.response.to.have.status(201));",
+        "pm.collectionVariables.set('deleteNoteId', pm.response.json().data._id);"
+      ] } }]
+    },
+    {
+      "name": "9B. DELETE Evidence Note",
+      "request": { "method": "DELETE", "url": "{{baseUrl}}/api/notes/{{deleteNoteId}}" },
+      "event": [{ "listen": "test", "script": { "exec": ["pm.test('Note deleted', () => pm.response.to.have.status(200));"] } }]
+    }
+  ]
+}

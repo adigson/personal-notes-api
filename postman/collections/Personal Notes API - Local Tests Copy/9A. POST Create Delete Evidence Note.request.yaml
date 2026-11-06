@@ -1,0 +1,20 @@
+$kind: http-request
+url: "{{baseUrl}}/api/notes"
+method: POST
+headers:
+  Content-Type: application/json
+body:
+  type: text
+  content: |-
+    {
+      "title": "Temporary deletion test",
+      "content": "This note is created only to demonstrate the delete endpoint.",
+      "category": "General"
+    }
+scripts:
+  - type: afterResponse
+    code: |-
+      pm.test('Delete test note created', () => pm.response.to.have.status(201));
+      pm.collectionVariables.set('deleteNoteId', pm.response.json().data._id);
+    language: text/javascript
+order: 9000
