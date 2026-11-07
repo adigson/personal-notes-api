@@ -23,7 +23,7 @@ A REST API for a second-brain or personal note-taking application. It uses Node.
 
    ```env
    PORT=5000
-   MONGO_URI=your_mongodb_connection_string
+   MONGO_URI=my_mongodb_connection_string
    ```
 
 4. Start the API:
@@ -35,11 +35,9 @@ A REST API for a second-brain or personal note-taking application. It uses Node.
 5. Open `http://localhost:5000/`.
 
 ## Live deployment
-
-Add the final public Render URL here after deployment, for example:
-
+ 
 ```text
-https://personal-notes-api.onrender.com
+https://personal-notes-api-bavd.onrender.com/
 ```
 
 ## API endpoints
@@ -172,7 +170,7 @@ The server must remain running while the screenshot command executes. The genera
 1. Push the repository to GitHub.
 2. Create a Render Web Service connected to the repository.
 3. Build command: `npm install`.
-4. Start command: `npm start`.
+4. Start command: `npm (run) start`.
 5. Add the environment variable `MONGO_URI` with the Atlas connection string.
 6. Add `NODE_VERSION` if the selected Render runtime needs an explicit version.
 7. Deploy and verify the Render health/root URL and all API endpoints.
